@@ -1,3 +1,5 @@
 class ImageUploader < Shrine
-  # plugins and uploading logic
+  Attacher.validate do
+    validate_extension %w[jpeg]
+  end
 end

@@ -28,6 +28,19 @@ RSpec.describe "Posts requests", type: :request do
     it "post has attached image file" do
       expect(Post.last.image.metadata["filename"]).to eq("test_image_1.jpeg")
     end
+
+    context "when file with invalid extension" do
+      let(:file) { fixture_file_upload("sample.png", "image/png") }
+      let(:error_response) { { "image" => ["extension must be one of: jpeg"] } }
+
+      it "returns status 422" do
+        expect(response.status).to eq(422)
+      end
+
+      it "return proper error message" do
+        expect(JSON.parse(response.body)).to eq(error_response)
+      end
+    end
   end
 
   describe "PUT /posts" do
