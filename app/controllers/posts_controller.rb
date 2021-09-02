@@ -10,7 +10,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1
   def show
-    render json: @post
+    render json: serialize_post(@post)
   end
 
   # POST /posts
@@ -46,6 +46,14 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, :image)
+    end
+
+    def serialize_post(post)
+      {
+        title: post.title,
+        body: post.body,
+        image_url: post.image.url,
+      }
     end
 end
